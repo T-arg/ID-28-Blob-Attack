@@ -1,9 +1,9 @@
 /*
-  Blob Attack: http://www.team-arg.org/blba-manual.html
+  Blob Attack: https://t-arg.github.io/ID-28-Blob-Attack/
 
-  Arduboy version 1.8.1:  http://www.team-arg.org/blba-downloads.html
+  Arduboy version 1.8.1:  https://github.com/T-arg/ID-28-Blob-Attack
 
-  MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
+  MADE by TEAM a.r.g. : https://t-arg.github.io/
 
   2015 - Game by JO3RI - All art by CastPixel: https://twitter.com/castpixel
 
