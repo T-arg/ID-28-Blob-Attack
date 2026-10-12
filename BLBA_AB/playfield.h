@@ -288,9 +288,8 @@ void removeGroups()
         showChain = true;
         showCombo = true;
       }
-      sound.tone(440, 100);
+      sfx(chain > 1 ? sfxPop2 : sfxPop1, 1);
       delay(100);
-      sound.tone(1047, 200);
     }
     giveExtraScore = false;
     removeFlag();
@@ -505,7 +504,7 @@ void rotateBlobsRight()
     currentBlobs[3] = currentBlobs[7];
     currentBlobs[7] = currentBlobs[5];
     currentBlobs[5] = temp;
-    sound.tone(330, 25);
+    sfx(sfxRotate, 1);
   }
   if (!isMovePossible(blobsXY[0], blobsXY[1]))
   {
@@ -526,7 +525,7 @@ void rotateBlobsLeft()
     currentBlobs[5] = currentBlobs[7];
     currentBlobs[7] = currentBlobs[3];
     currentBlobs[3] = temp;
-    sound.tone(330, 25);
+    sfx(sfxRotate, 1);
   }
   if (!isMovePossible(blobsXY[0], blobsXY[1]))
   {
@@ -683,7 +682,7 @@ void scoreDraw(int scoreX, int scoreY)
 
 void drawNormalElf()
 {
-  sprites.drawSelfMasked(51, 0, elfNormal, 0);
+  drawRle(elfNormal, 51, 77);
   sprites.drawSelfMasked(79, 24, elfNormalEyes, pgm_read_byte(&elfNormalEyesSequence[elfPausedFrame]));
 }
 
@@ -704,12 +703,12 @@ void drawPausedElf()
 
 void drawThumbsUpElf()
 {
-  sprites.drawSelfMasked(51, 0, elfThumbsUp, pgm_read_byte(&thumbsUpSequence[thumbsUpFrame]));
+  drawRle(elfThumbsUp + pgm_read_word(&elfThumbsUpOff[pgm_read_byte(&thumbsUpSequence[thumbsUpFrame])]), 51, 77);
 }
 
 void drawNodElf()
 {
-  sprites.drawSelfMasked(51, 0, elfNod, pgm_read_byte(&nodSequence[nodFrame]));
+  drawRle(elfNod + pgm_read_word(&elfNodOff[pgm_read_byte(&nodSequence[nodFrame])]), 51, 77);
 }
 
 void drawDitherBackground()
@@ -884,6 +883,7 @@ void testSpeed()
   {
     showSpeedUp = true;
     previousSpeed = currentSpeed;
+    sfx(sfxSpeed, 1);
   }
 }
 
@@ -910,13 +910,13 @@ void dropBlobs()
   if (isMovePossible(blobsXY[0], blobsXY[1] + 1))
   {
     blobsXY[1]++;
-    sound.tone(104, 10);
     extraScoreForChain = 0;
     chain = 0;
   }
   else if (gameState != STATE_GAME_OVER)
   {
     storeBlob(blobsXY[0], blobsXY[1]);
+    sfx(sfxLand, 3);
     scorePlayer += 10;
     deletePossibleBlobs();
     createCurrentBlobs();

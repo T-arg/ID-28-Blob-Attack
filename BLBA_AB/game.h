@@ -47,6 +47,7 @@ void stateGamePlaying()
   {
     gameState = STATE_GAME_PAUSE;
     elfState = ELF_PAUSED;
+    sfx(sfxPause, 1);
   }
 };
 
@@ -58,6 +59,7 @@ void stateGamePause()
   {
     gameState = STATE_GAME_PLAYING;
     elfState = ELF_NORMAL;
+    sfx(sfxPause, 1);
   }
 };
 

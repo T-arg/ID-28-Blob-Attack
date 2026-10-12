@@ -1,11 +1,13 @@
 /*
   Blob Attack: https://t-arg.github.io/ID-28-Blob-Attack/
 
-  Arduboy version 1.8.1:  https://github.com/T-arg/ID-28-Blob-Attack
+  Arduboy version 2.0.0:  https://github.com/T-arg/ID-28-Blob-Attack
 
   MADE by TEAM a.r.g. : https://t-arg.github.io/
 
   2015 - Game by JO3RI - All art by CastPixel: https://twitter.com/castpixel
+
+  2026 - MUSIC and SOUND EFFECTS - JO3RI
 
   Game License: MIT : https://opensource.org/licenses/MIT
 
@@ -27,6 +29,7 @@ const FunctionPointer PROGMEM  mainGameLoop[] = {
   stateMenuPlay,
   stateMenuInfo,
   stateMenuSoundfx,
+  stateMenuJbox,
   stateGamePlaying,
   stateGamePause,
   stateGameOver,
@@ -34,9 +37,8 @@ const FunctionPointer PROGMEM  mainGameLoop[] = {
 
 
 void setup() {
-  arduboy.boot();                                           // begin with the boot logo en setting up the device to work
+  arduboy.boot();                                           
   arduboy.audio.begin();
-  arduboy.bootLogoSpritesSelfMasked();
   arduboy.setFrameRate(60);                                 // set the frame rate of the game at 60 fps
   arduboy.initRandomSeed();
 }
@@ -45,6 +47,7 @@ void loop() {
   if (!(arduboy.nextFrame())) return;
   arduboy.pollButtons();
   arduboy.clear();
+  musicUpdate();
   ((FunctionPointer) pgm_read_word (&mainGameLoop[gameState]))();
   arduboy.display();
 }
