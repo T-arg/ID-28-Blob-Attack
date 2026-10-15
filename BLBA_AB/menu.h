@@ -22,12 +22,21 @@ void drawTitleScreen()
 
 void stateMenuIntro()
 {
-  if (globalCounter < 120)
+  globalCounter++;
+  if (globalCounter == 20) sfx(sfxLetters, 1);                   // the letter notes, one every 17 frames
+  if (globalCounter < 130)                                       // the letters of ARDUBOY slide in from the right, one after the other
   {
-    globalCounter++;
-    sprites.drawSelfMasked(49, 20, T_arg, 0);
+    for (byte i = 0; i < 7; i++)
+    {
+      int d = globalCounter - 17 * i;                            // frames since this letter started to move
+      if (d < 0) break;
+      int x = 36 + 8 * i;
+      if (d < 20) x += 6 * (20 - d);
+      sprites.drawSelfMasked(x, 28, arduboyLetters, i);
+    }
   }
-  else
+  else sprites.drawSelfMasked(49, 20, T_arg, 0);
+  if (globalCounter > 254)
   {
     gameState = STATE_MENU_MAIN;
     globalCounter = 0;
@@ -79,6 +88,9 @@ void stateMenuSoundfx()
 byte jbRow = 0;
 byte jbNr[2];                                  // MUSIC 0..2, SNDFX 0..7
 
+// little arrows left and right of the number (2 x 3 pixels, frame 0 points left, frame 1 right)
+const unsigned char PROGMEM jbArrow[] = { 2, 8, 0x02, 0x07, 0x07, 0x02 };
+
 void stateMenuJbox()
 {
   if (arduboy.everyXFrames(5)) sequenceFrame = (++sequenceFrame) % 8;
@@ -87,6 +99,8 @@ void stateMenuJbox()
   {
     const unsigned char *w = i ? jboxSndfx : jboxMusic;
     byte y = 34 + 12 * i;
+    sprites.drawSelfMasked(73, y + 2, jbArrow, 0);
+    sprites.drawSelfMasked(86, y + 2, jbArrow, 1);
     arduboy.fillRect(44, y, pgm_read_byte(w), 7, WHITE);
     sprites.drawErase(44, y, w, 0);
     if (jbRow != i || (arduboy.frameCount & 16))              // the selected number blinks
@@ -99,8 +113,8 @@ void stateMenuJbox()
   byte n = jbRow ? JBOX_SFX : JBOX_MUSIC;
   if (arduboy.justPressed(UP_BUTTON)) jbRow = 0;
   if (arduboy.justPressed(DOWN_BUTTON)) jbRow = 1;
-  if (arduboy.justPressed(LEFT_BUTTON)) jbNr[jbRow] = (jbNr[jbRow] + 1) % n;
-  if (arduboy.justPressed(RIGHT_BUTTON)) jbNr[jbRow] = (jbNr[jbRow] + n - 1) % n;
+  if (arduboy.justPressed(RIGHT_BUTTON)) jbNr[jbRow] = (jbNr[jbRow] + 1) % n;
+  if (arduboy.justPressed(LEFT_BUTTON)) jbNr[jbRow] = (jbNr[jbRow] + n - 1) % n;
   if (arduboy.justPressed(B_BUTTON) && arduboy.audio.enabled())
   {
     if (jbRow) sfx((const uint8_t *)pgm_read_word(&sfxList[jbNr[1]]), jbNr[1] ? 1 : 3);

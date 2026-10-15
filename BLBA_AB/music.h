@@ -20,7 +20,7 @@
 #define MV(v) ((v) * MUSIC_VOL_PCT / 100)
 #define MS(n) ((uint8_t)-((((n) * MUSIC_VOL_PCT + 50) / 100) < 1 ? 1 : (((n) * MUSIC_VOL_PCT + 50) / 100)))
 
-// bytes per song:  blobTitle 323, blobPlay 301, blobOver 23  (total 647)
+// bytes per song:  blobTitle 306, blobPlay 283, blobOver 23  (total 612)
 // bytes of effects: 73
 
 // =====================================================================================================================
@@ -31,16 +31,20 @@
 // Blob Attack - title screen
 // G major, bouncy and cheerful: a plucky lead, bouncing octave bass, sparkling chord arpeggios and a hopping beat.
 // G Em C D | G Em Am D | C G Am D | C G D D, a 16-bar loop (1024 ticks). Tempo 44. 100 % volume.
-// 323 bytes
+// 306 bytes
 // ---------------------------------------------------------------------------
-Song blobTitle[] = {          // total song in bytes = 323
-  0x06,                         // Number of tracks
+Song blobTitle[] = {          // total song in bytes = 304
+  0x0A,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  drums
   0x07, 0x00,                   // Address of track 1   //7  pair
   0x1A, 0x00,                   // Address of track 2   //26  lead
-  0xA4, 0x00,                   // Address of track 3   //164  chords
-  0xDF, 0x00,                   // Address of track 4   //223  bar
-  0xEC, 0x00,                   // Address of track 5   //236  bass
+  0x9D, 0x00,                   // Address of track 3   //157  chords
+  0xC6, 0x00,                   // Address of track 4   //198  bar
+  0xD3, 0x00,                   // Address of track 5   //211  bass
+  0xF3, 0x00,                   // Address of track 6   //243  sh0
+  0x00, 0x01,                   // Address of track 7   //256  sh1
+  0x0C, 0x01,                   // Address of track 8   //268  sh2
+  0x13, 0x01,                   // Address of track 9   //275  sh3
 
   0x02,                         // Channel 0 entry track (lead)
   0x03,                         // Channel 1 entry track (chords)
@@ -66,7 +70,7 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_DELAY(8),
   ATM_RETURN,
 
-  //"Track 2" lead  [138 bytes]
+  //"Track 2" lead  [131 bytes]
   ATM_VOL(44),
   ATM_SL_VOL((uint8_t)-2),
   ATM_NOTE_D5,
@@ -98,13 +102,9 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_NOTE_G5,
   ATM_DELAY(32),
   ATM_NOTE_F5_,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_A4,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_B4,
   ATM_DELAY(8),
   ATM_NOTE_D5,
@@ -142,9 +142,7 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_NOTE_E5,
   ATM_DELAY(16),
   ATM_NOTE_C5,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_G5,
   ATM_DELAY(16),
   ATM_NOTE_B5,
@@ -166,9 +164,7 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_NOTE_A5,
   ATM_DELAY(16),
   ATM_NOTE_F5_,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_G5,
   ATM_DELAY(8),
   ATM_NOTE_E5,
@@ -180,15 +176,11 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_NOTE_G5,
   ATM_DELAY(16),
   ATM_NOTE_B4,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_G5,
   ATM_DELAY(32),
   ATM_NOTE_A4,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_F5_,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -196,14 +188,12 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_NOTE_A5,
   ATM_DELAY(16),
   ATM_NOTE_F5_,
-  ATM_DELAY(16),
-  ATM_NOTE_D5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_A4,
   ATM_DELAY(16),
   ATM_GOTO(2),   // -> lead
 
-  //"Track 3" chords  [59 bytes]
+  //"Track 3" chords  [41 bytes]
   ATM_VOL(26),
   ATM_SL_VOL((uint8_t)-1),
   ATM_ARP(0x43, 0x23),
@@ -222,25 +212,9 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_ARP(0x34, 0x23),
   ATM_NOTE_E3,
   ATM_DELAY(64),
-  ATM_NOTE_A3,
-  ATM_DELAY(64),
-  ATM_ARP(0x43, 0x23),
-  ATM_NOTE_D4,
-  ATM_DELAY(64),
-  ATM_NOTE_C4,
-  ATM_DELAY(64),
-  ATM_NOTE_G3,
-  ATM_DELAY(64),
+  ATM_GOTO(7),   // -> sh1
   ATM_ARP(0x34, 0x23),
-  ATM_NOTE_A3,
-  ATM_DELAY(64),
-  ATM_ARP(0x43, 0x23),
-  ATM_NOTE_D4,
-  ATM_DELAY(64),
-  ATM_NOTE_C4,
-  ATM_DELAY(64),
-  ATM_NOTE_G3,
-  ATM_DELAY(64),
+  ATM_GOTO(7),   // -> sh1
   ATM_NOTE_D4,
   ATM_DELAY(64),
   ATM_NOTE_D4,
@@ -262,7 +236,7 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_DELAY(8),
   ATM_RETURN,
 
-  //"Track 5" bass  [70 bytes]
+  //"Track 5" bass  [32 bytes]
   ATM_VOL(56),
   ATM_SL_VOL((uint8_t)-2),
   ATM_SET_TRA(0),
@@ -270,34 +244,48 @@ Song blobTitle[] = {          // total song in bytes = 323
   ATM_SET_TRA((uint8_t)-3),
   ATM_GOTO(4),   // -> bar
   ATM_SET_TRA((uint8_t)-7),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
+  ATM_GOTO(8),   // -> sh2
   ATM_SET_TRA(0),
   ATM_GOTO(4),   // -> bar
   ATM_SET_TRA((uint8_t)-3),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(2),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-7),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(0),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(2),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-7),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(0),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
+  ATM_GOTO(6),   // -> sh0
+  ATM_GOTO(6),   // -> sh0
+  ATM_GOTO(8),   // -> sh2
   ATM_GOTO(4),   // -> bar
   ATM_GOTO(5),   // -> bass
+
+  //"Track 6" sh0  [13 bytes]
+  ATM_GOTO(4),   // -> bar
+  ATM_SET_TRA(2),
+  ATM_GOTO(8),   // -> sh2
+  ATM_SET_TRA((uint8_t)-7),
+  ATM_GOTO(4),   // -> bar
+  ATM_SET_TRA(0),
+  ATM_RETURN,
+
+  //"Track 7" sh1  [12 bytes]
+  ATM_NOTE_A3,
+  ATM_DELAY(64),
+  ATM_ARP(0x43, 0x23),
+  ATM_NOTE_D4,
+  ATM_DELAY(64),
+  ATM_NOTE_C4,
+  ATM_DELAY(64),
+  ATM_NOTE_G3,
+  ATM_DELAY(64),
+  ATM_RETURN,
+
+  //"Track 8" sh2  [7 bytes]
+  ATM_GOTO(4),   // -> bar
+  ATM_SET_TRA((uint8_t)-5),
+  ATM_GOTO(4),   // -> bar
+  ATM_RETURN,
+
+  //"Track 9" sh3  [4 bytes]
+  ATM_DELAY(16),
+  ATM_NOTE_D5,
+  ATM_DELAY(16),
+  ATM_RETURN,
 
 };
 
@@ -305,16 +293,20 @@ Song blobTitle[] = {          // total song in bytes = 323
 // Blob Attack - in game
 // F major, a steady playful puzzle groove: bouncing bass, soft arpeggios, a simple singing lead and a light beat.
 // F Dm Bb C | F Dm Gm C | Bb F Gm C | Bb F C C, a 16-bar loop (1024 ticks). Tempo 36. 60 % volume.
-// 301 bytes
+// 283 bytes
 // ---------------------------------------------------------------------------
-Song blobPlay[] = {          // total song in bytes = 301
-  0x06,                         // Number of tracks
+Song blobPlay[] = {          // total song in bytes = 281
+  0x0A,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  drums
   0x07, 0x00,                   // Address of track 1   //7  pair
   0x1A, 0x00,                   // Address of track 2   //26  lead
-  0x8E, 0x00,                   // Address of track 3   //142  chords
-  0xC9, 0x00,                   // Address of track 4   //201  bar
-  0xD6, 0x00,                   // Address of track 5   //214  bass
+  0x86, 0x00,                   // Address of track 3   //134  chords
+  0xAF, 0x00,                   // Address of track 4   //175  bar
+  0xBC, 0x00,                   // Address of track 5   //188  bass
+  0xDC, 0x00,                   // Address of track 6   //220  sh0
+  0xE9, 0x00,                   // Address of track 7   //233  sh1
+  0xF5, 0x00,                   // Address of track 8   //245  sh2
+  0xFC, 0x00,                   // Address of track 9   //252  sh3
 
   0x02,                         // Channel 0 entry track (lead)
   0x03,                         // Channel 1 entry track (chords)
@@ -340,17 +332,13 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_DELAY(8),
   ATM_RETURN,
 
-  //"Track 2" lead  [116 bytes]
+  //"Track 2" lead  [108 bytes]
   ATM_VOL(MV(44)),
   ATM_SL_VOL(MS(2)),
   ATM_NOTE_A4,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_F5,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_D5,
   ATM_DELAY(16),
   ATM_NOTE_A4,
@@ -364,17 +352,13 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_NOTE_A4_,
   ATM_DELAY(16),
   ATM_NOTE_D5,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_E5,
   ATM_DELAY(16),
   ATM_NOTE_G5,
   ATM_DELAY(32),
   ATM_NOTE_A4,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_F5,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -404,9 +388,7 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_NOTE_D5,
   ATM_DELAY(16),
   ATM_NOTE_A4_,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_F5,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -422,9 +404,7 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_NOTE_G5,
   ATM_DELAY(16),
   ATM_NOTE_E5,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_G4,
   ATM_DELAY(32),
   ATM_NOTE_A4_,
@@ -434,15 +414,11 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_NOTE_F5,
   ATM_DELAY(32),
   ATM_NOTE_A4,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_F5,
   ATM_DELAY(32),
   ATM_NOTE_G4,
-  ATM_DELAY(16),
-  ATM_NOTE_C5,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh3
   ATM_NOTE_E5,
   ATM_DELAY(16),
   ATM_NOTE_G5,
@@ -455,7 +431,7 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_DELAY(16),
   ATM_GOTO(2),   // -> lead
 
-  //"Track 3" chords  [59 bytes]
+  //"Track 3" chords  [41 bytes]
   ATM_VOL(MV(26)),
   ATM_SL_VOL(MS(1)),
   ATM_ARP(0x43, 0x23),
@@ -474,25 +450,9 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_ARP(0x34, 0x23),
   ATM_NOTE_D4,
   ATM_DELAY(64),
-  ATM_NOTE_G3,
-  ATM_DELAY(64),
-  ATM_ARP(0x43, 0x23),
-  ATM_NOTE_C4,
-  ATM_DELAY(64),
-  ATM_NOTE_A3_,
-  ATM_DELAY(64),
-  ATM_NOTE_F3,
-  ATM_DELAY(64),
+  ATM_GOTO(7),   // -> sh1
   ATM_ARP(0x34, 0x23),
-  ATM_NOTE_G3,
-  ATM_DELAY(64),
-  ATM_ARP(0x43, 0x23),
-  ATM_NOTE_C4,
-  ATM_DELAY(64),
-  ATM_NOTE_A3_,
-  ATM_DELAY(64),
-  ATM_NOTE_F3,
-  ATM_DELAY(64),
+  ATM_GOTO(7),   // -> sh1
   ATM_NOTE_C4,
   ATM_DELAY(64),
   ATM_NOTE_C4,
@@ -514,7 +474,7 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_DELAY(8),
   ATM_RETURN,
 
-  //"Track 5" bass  [70 bytes]
+  //"Track 5" bass  [32 bytes]
   ATM_VOL(MV(56)),
   ATM_SL_VOL(MS(2)),
   ATM_SET_TRA(0),
@@ -522,34 +482,48 @@ Song blobPlay[] = {          // total song in bytes = 301
   ATM_SET_TRA((uint8_t)-3),
   ATM_GOTO(4),   // -> bar
   ATM_SET_TRA(5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
+  ATM_GOTO(8),   // -> sh2
   ATM_SET_TRA(0),
   ATM_GOTO(4),   // -> bar
   ATM_SET_TRA((uint8_t)-3),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(2),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(0),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(2),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA(0),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
-  ATM_GOTO(4),   // -> bar
-  ATM_SET_TRA((uint8_t)-5),
+  ATM_GOTO(6),   // -> sh0
+  ATM_GOTO(6),   // -> sh0
+  ATM_GOTO(8),   // -> sh2
   ATM_GOTO(4),   // -> bar
   ATM_GOTO(5),   // -> bass
+
+  //"Track 6" sh0  [13 bytes]
+  ATM_GOTO(4),   // -> bar
+  ATM_SET_TRA(2),
+  ATM_GOTO(8),   // -> sh2
+  ATM_SET_TRA(5),
+  ATM_GOTO(4),   // -> bar
+  ATM_SET_TRA(0),
+  ATM_RETURN,
+
+  //"Track 7" sh1  [12 bytes]
+  ATM_NOTE_G3,
+  ATM_DELAY(64),
+  ATM_ARP(0x43, 0x23),
+  ATM_NOTE_C4,
+  ATM_DELAY(64),
+  ATM_NOTE_A3_,
+  ATM_DELAY(64),
+  ATM_NOTE_F3,
+  ATM_DELAY(64),
+  ATM_RETURN,
+
+  //"Track 8" sh2  [7 bytes]
+  ATM_GOTO(4),   // -> bar
+  ATM_SET_TRA((uint8_t)-5),
+  ATM_GOTO(4),   // -> bar
+  ATM_RETURN,
+
+  //"Track 9" sh3  [4 bytes]
+  ATM_DELAY(16),
+  ATM_NOTE_C5,
+  ATM_DELAY(16),
+  ATM_RETURN,
 
 };
 
@@ -596,6 +570,7 @@ ATM_SFX_TRACK(sfxPop2, ATM_VOL(44), ATM_SL_VOL((uint8_t)-2), ATM_NOTE_C5, ATM_DE
 ATM_SFX_TRACK(sfxSpeed, ATM_VOL(44), ATM_SL_VOL((uint8_t)-2), ATM_NOTE_C4, ATM_DELAY(3), ATM_NOTE_G4, ATM_DELAY(3), ATM_NOTE_C5, ATM_DELAY(3), ATM_NOTE_E5, ATM_DELAY(10)); // speed up: rising notes, 13 bytes (ch1)
 ATM_SFX_TRACK(sfxPause, ATM_VOL(38), ATM_SL_VOL((uint8_t)-4), ATM_NOTE_A4, ATM_DELAY(3), ATM_NOTE_E4, ATM_DELAY(6)); // pause / resume: falling ping, 9 bytes (ch1)
 ATM_SFX_TRACK(sfxMove, ATM_VOL(34), ATM_SL_VOL((uint8_t)-8), ATM_NOTE_A4, ATM_DELAY(3)); // menu cursor tick, 7 bytes (ch1)
+ATM_SFX_TRACK(sfxLetters, ATM_VOL(48), ATM_SL_VOL((uint8_t)-4), ATM_NOTE_E2, ATM_DELAY(7), ATM_NOTE_C2, ATM_DELAY(7), ATM_NOTE_G2, ATM_DELAY(7), ATM_NOTE_D2, ATM_DELAY(7), ATM_NOTE_A2, ATM_DELAY(7), ATM_NOTE_F2, ATM_DELAY(7), ATM_NOTE_B2, ATM_DELAY(14)); // ARDUBOY intro: one note per letter (ch1)
 ATM_SFX_TRACK(sfxSelect, ATM_VOL(40), ATM_SL_VOL((uint8_t)-3), ATM_NOTE_E4, ATM_DELAY(2), ATM_NOTE_A4, ATM_DELAY(8)); // menu select: rising ping, 9 bytes (ch1)
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -638,7 +613,7 @@ void musicUpdate()
   {
     if (gameState == STATE_GAME_OVER) want = MUSIC_OVER;
     else if (gameState == STATE_MENU_PLAY || gameState >= STATE_GAME_PLAYING) want = MUSIC_GAME;
-    else if (gameState != STATE_MENU_INTRO) want = MUSIC_TITLE;
+    else if (gameState != STATE_MENU_INTRO || globalCounter >= 130) want = MUSIC_TITLE;   // from the T-arg logo on
   }
   if (want != musicId) musicPlay(want);
 }
